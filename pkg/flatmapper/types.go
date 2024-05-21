@@ -1,0 +1,42 @@
+package flatmapper
+
+import "time"
+
+// handlerDatum implements the Datum interface and is used in the map stream functions.
+type handlerDatum struct {
+	value     []byte
+	eventTime time.Time
+	watermark time.Time
+	headers   map[string]string
+	uuid      string
+}
+
+func NewHandlerDatum(value []byte, eventTime time.Time, watermark time.Time, headers map[string]string, uid string) Datum {
+	return &handlerDatum{
+		value:     value,
+		eventTime: eventTime,
+		watermark: watermark,
+		headers:   headers,
+		uuid:      uid,
+	}
+}
+
+func (h *handlerDatum) Value() []byte {
+	return h.value
+}
+
+func (h *handlerDatum) EventTime() time.Time {
+	return h.eventTime
+}
+
+func (h *handlerDatum) Watermark() time.Time {
+	return h.watermark
+}
+
+func (h *handlerDatum) Headers() map[string]string {
+	return h.headers
+}
+
+func (h *handlerDatum) Uuid() string {
+	return h.uuid
+}
