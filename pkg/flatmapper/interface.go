@@ -32,3 +32,24 @@ type MapperFunc func(ctx context.Context, keys []string, datum Datum) Messages
 func (mf MapperFunc) Map(ctx context.Context, keys []string, datum Datum) Messages {
 	return mf(ctx, keys, datum)
 }
+
+// FlatmapCreator is the interface which is used to create a FlatMapper.
+type FlatmapCreator interface {
+	// Create creates a FlatMapper, will be invoked by each
+	Create() FlatMapper
+}
+
+// simpleFlatmapCreator is an implementation of FlatmapCreator, which creates a FlatM for the given function.
+type simpleFlatmapCreator struct {
+	f func(ctx context.Context, keys []string, datum Datum) Messages
+}
+
+// Create creates a Reducer for the given function.
+func (s *simpleFlatmapCreator) Create() FlatMapper {
+	return MapperFunc(s.f)
+}
+
+// SimpleCreatorWithFlatmapFn creates a simple FlatMapCreator for the given reduce function.
+func SimpleCreatorWithFlatmapFn(f func(ctx context.Context, keys []string, datum Datum) Messages) FlatmapCreator {
+	return &simpleFlatmapCreator{f: f}
+}

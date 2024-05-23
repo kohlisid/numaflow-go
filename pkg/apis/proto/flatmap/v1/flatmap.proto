@@ -36,6 +36,7 @@ message MapResponse {
     bytes value = 2;
     repeated string tags = 3;
     string uuid = 4;
+    bool EOR = 5;
   }
   Result result = 1;
 }

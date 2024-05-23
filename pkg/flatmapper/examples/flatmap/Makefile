@@ -1,4 +1,4 @@
-TAG ?= ged3
+TAG ?= ged8
 PUSH ?= true
 
 .PHONY: build
